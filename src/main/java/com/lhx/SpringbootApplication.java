@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
 
+/**
+ * springboot干货系列
+ * http://tengj.top/tags/Spring-Boot/
+ */
+
 @RestController
 @SpringBootApplication
 public class SpringbootApplication {

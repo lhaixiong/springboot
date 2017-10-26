@@ -3,6 +3,7 @@ package com.lhx.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.lhx.config.ConfigBean;
 import com.lhx.entity.LearnResource;
+import com.lhx.entity.User;
 import com.lhx.service.LearnResourceService;
 import com.lhx.tools.Page;
 import com.lhx.tools.ServletUtil;
@@ -31,6 +32,24 @@ import java.util.Map;
 public class LearnResourceController {
     @Autowired
     private ConfigBean configBean;
+    /**
+     *登录操作
+     **/
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> login(HttpServletRequest request, HttpServletResponse response){
+        Map<String,Object> map =new HashMap<String,Object>();
+        String username=request.getParameter("username");
+        String password=request.getParameter("password");
+        if(!username.equals("") && !password.equals("")){
+            User user =new User(username,password);
+            request.getSession().setAttribute("user",user);
+            map.put("result","1");
+        }else{
+            map.put("result","0");
+        }
+        return map;
+    }
     @RequestMapping("/")
     @ResponseBody
     public String index(){
@@ -61,6 +80,7 @@ public class LearnResourceController {
         learnList.add(bean);
         ModelAndView mv=new ModelAndView("/learn");
         mv.addObject("learnList",learnList);
+        System.out.println("aaaaa");
         return mv;
     }
 
@@ -68,12 +88,14 @@ public class LearnResourceController {
     private LearnResourceService learnService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @RequestMapping("")
-    public String learn(){
-        return "learn-resource";
+    @RequestMapping("/toLearnList")
+    public ModelAndView learn(){
+
+        return new ModelAndView("/learn-resource");
     }
 
-    @RequestMapping(value = "/queryLeanList",method = RequestMethod.POST,produces="application/json;charset=UTF-8")
+//    @RequestMapping(value = "/queryLeanList",method = RequestMethod.POST,produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "/queryLeanList",produces="application/json;charset=UTF-8")
     @ResponseBody
     public void queryLearnList(HttpServletRequest request , HttpServletResponse response){
         logger.info("queryLearnList....");
@@ -92,6 +114,7 @@ public class LearnResourceController {
         jo.put("rows", learnList);
         jo.put("total", pageObj.getTotalPages());
         jo.put("records", pageObj.getTotalRows());
+        request.getSession().setAttribute("aa",135);
         ServletUtil.createSuccessResponse(200, jo, response);
     }
     /**

@@ -12,7 +12,7 @@ $(function(){
     });
 
     $(grid_selector).jqGrid({
-        url:"learn/queryLeanList",
+        url:"http://localhost:8080/learn/queryLeanList",
         datatype: "json",
         mtype: 'POST',
         height:window.screen.height-550,
@@ -155,7 +155,7 @@ $(function(){
         if(rows.length>0){
             $.messager.confirm("温馨提示", "是否确定删除所选记录？", function() {
                 $.ajax({
-                    url:"learn/delete",
+                    url:"http://localhost:8080/learn/delete",
                     cache: false,
                     type:"post",
                     data:{"ids": rows.join(",")},
@@ -205,7 +205,7 @@ function saveLearn(){
     var title = $('#title').val();
     var url = $('#url').val();
     $.ajax({
-        url: "learn/"+task,
+        url: "http://localhost:8080/learn/"+task,
         cache: false,
         dataType:'json',
         data : {
